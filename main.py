@@ -1,159 +1,155 @@
-# main.py - الملف الرئيسي للتطبيق
+#!/usr/bin/env python3
 """
-WhatsApp Sender Pro - نظام إرسال رسائل WhatsApp تلقائي مع إدارة تراخيص متقدمة
-الإصدار: 1.0.0
+WhatsApp Sender Pro - Professional Edition
+الإصدار المحسّن والمقسّم لسهولة الصيانة والتطوير
 """
 
 import sys
 import os
+import traceback
 from pathlib import Path
 
-# إضافة المسار إلى sys.path
+# الحصول على المسار الحالي
 current_dir = Path(__file__).parent
-sys.path.append(str(current_dir))
+project_dir = current_dir.parent
 
-# يجب أن تكون الاستيرادات هكذا لأن utils خارج app
-from utils.logger import setup_logger
-from app.core.license_validator import LicenseValidator
-from app.ui.user_interface import WhatsAppSenderApp
-from app.core.hwid_generator import HWIDGenerator
-from app.services.firestore_service import FirestoreService
-from app.core.update_checker import UpdateChecker
-from app.core.encryption_service import EncryptionService
+print(f"📁 المشروع: {project_dir}")
+print(f"📁 المصدر: {current_dir}")
 
-import tkinter as tk
-from tkinter import messagebox
-import threading
-
-class WhatsAppSenderPro:
-    def __init__(self):
-        """تهيئة التطبيق الرئيسي"""
-        self.logger = setup_logger("main_app")
-        self.hwid = HWIDGenerator.generate()
-        self.license_validator = LicenseValidator()
-        self.encryption_service = EncryptionService()
-        self.firestore_service = None
-        self.app = None
-        
-    def initialize_firebase(self):
-        """تهيئة اتصال Firebase"""
-        try:
-            self.firestore_service = FirestoreService()
-            self.firestore_service.initialize()
-            return True
-        except Exception as e:
-            self.logger.error(f"خطأ في تهيئة Firebase: {e}")
-            return False
+def install_requirements():
+    """تثبيت المتطلبات تلقائياً"""
+    print("📦 تثبيت المتطلبات...")
     
-    def check_license(self):
-        """فحص الترخيص"""
-        try:
-            # قراءة الترخيص المحلي
-            license_file = current_dir / "license.key"
-            if license_file.exists():
-                with open(license_file, 'r') as f:
-                    license_key = f.read().strip()
-                
-                # فك تشفير الترخيص
-                decrypted_license = self.encryption_service.decrypt(license_key)
-                
-                # التحقق من الترخيص
-                if self.license_validator.validate(decrypted_license, self.hwid):
-                    # التحقق من صلاحية الترخيص عبر Firebase
-                    if self.firestore_service:
-                        is_valid = self.firestore_service.validate_license(decrypted_license, self.hwid)
-                        if is_valid:
-                            return True
-            return False
-        except Exception as e:
-            self.logger.error(f"خطأ في فحص الترخيص: {e}")
-            return False
-    
-    def show_license_window(self):
-        """عرض نافذة إدخال الترخيص"""
-        license_window = tk.Toplevel()
-        license_window.title("تفعيل الترخيص")
-        license_window.geometry("400x300")
-        license_window.configure(bg="#f0f0f0")
+    try:
+        import subprocess
+        import importlib
         
-        # عناصر واجهة الترخيص
-        tk.Label(license_window, text="WhatsApp Sender Pro", 
-                font=("Arial", 16, "bold"), bg="#f0f0f0").pack(pady=20)
+        # قائمة المكتبات المطلوبة
+        requirements = [
+            "PyQt6",
+            "selenium",
+            "webdriver-manager",
+            "pandas",
+            "Pillow",
+            "cryptography",
+            "requests",
+            "pyperclip",
+            "psutil",
+            "arabic-reshaper",
+            "python-bidi",
+            "deep-translator",
+            "openpyxl",
+            "python-dotenv",
+            "PyAutoGUI",
+            "chromedriver-autoinstaller==0.6.0"
+        ]
         
-        tk.Label(license_window, text="أدخل مفتاح الترخيص:", 
-                font=("Arial", 12), bg="#f0f0f0").pack()
-        
-        license_entry = tk.Entry(license_window, width=40, font=("Arial", 12))
-        license_entry.pack(pady=10, padx=20)
-        
-        tk.Label(license_window, text=f"معرف الجهاز: {self.hwid}", 
-                font=("Arial", 10), bg="#f0f0f0", fg="#666").pack(pady=5)
-        
-        def activate_license():
-            """تفعيل الترخيص"""
-            license_key = license_entry.get().strip()
-            if license_key:
-                # تشفير وحفظ الترخيص
-                encrypted_key = self.encryption_service.encrypt(license_key)
-                with open(current_dir / "license.key", 'w') as f:
-                    f.write(encrypted_key)
-                
-                # التحقق من الترخيص
-                if self.check_license():
-                    messagebox.showinfo("نجاح", "تم تفعيل الترخيص بنجاح!")
-                    license_window.destroy()
-                    self.start_main_app()
+        for package in requirements:
+            package_name = package.split("==")[0]
+            try:
+                if package_name == "PyQt6":
+                    __import__("PyQt6.QtWidgets")
+                elif package_name == "python-bidi":
+                    __import__("bidi")
+                elif package_name == "deep-translator":
+                    __import__("deep_translator")
                 else:
-                    messagebox.showerror("خطأ", "الترخيص غير صالح أو منتهي الصلاحية")
-            else:
-                messagebox.showwarning("تحذير", "يرجى إدخال مفتاح الترخيص")
+                    __import__(package_name)
+                print(f"✅ {package_name} مثبت بالفعل")
+            except ImportError:
+                print(f"📦 جاري تثبيت {package}...")
+                try:
+                    subprocess.check_call([
+                        sys.executable, "-m", "pip", "install", package,
+                        "--quiet", "--disable-pip-version-check"
+                    ])
+                    print(f"✅ تم تثبيت {package}")
+                except Exception as e:
+                    print(f"❌ فشل تثبيت {package}: {e}")
         
-        tk.Button(license_window, text="تفعيل", command=activate_license,
-                 bg="#4CAF50", fg="white", font=("Arial", 12), 
-                 padx=20, pady=5).pack(pady=20)
+        print("🎉 تم تثبيت جميع المتطلبات بنجاح!")
+        return True
         
-        # رابط لشراء ترخيص
-        tk.Label(license_window, text="شراء ترخيص جديد", 
-                font=("Arial", 10, "underline"), 
-                fg="blue", cursor="hand2").pack()
-        
-        license_window.mainloop()
+    except Exception as e:
+        print(f"❌ خطأ في تثبيت المتطلبات: {e}")
+        return False
+
+def check_directories():
+    """التحقق من وجود المجلدات المطلوبة"""
+    directories = [
+        project_dir / "data" / "config",
+        project_dir / "data" / "logs", 
+        project_dir / "data" / "fonts",
+        project_dir / "data" / "temp",
+        project_dir / "assets" / "icons"
+    ]
     
-    def start_main_app(self):
-        """بدء التطبيق الرئيسي"""
-        self.app = WhatsAppSenderApp(self.hwid, self.firestore_service)
-        self.app.run()
-    
-    def run(self):
-        """تشغيل التطبيق"""
-        self.logger.info("بدء تشغيل WhatsApp Sender Pro")
+    for directory in directories:
+        directory.mkdir(parents=True, exist_ok=True)
+        print(f"📁 {directory.name} - جاهز")
+
+def main():
+    """الدالة الرئيسية"""
+    try:
+        # التحقق من المجلدات
+        check_directories()
         
-        # تهيئة Firebase
-        if not self.initialize_firebase():
-            messagebox.showerror("خطأ", "تعذر الاتصال بخادم المصادقة")
+        # تثبيت المتطلبات
+        if not install_requirements():
+            print("❌ فشل في تثبيت المتطلبات")
+            input("اضغط Enter للخروج...")
             return
         
-        # التحقق من التحديثات
-        update_checker = UpdateChecker()
-        if update_checker.check_for_updates():
-            if messagebox.askyesno("تحديث", "يوجد تحديث جديد. هل تريد التحديث الآن؟"):
-                update_checker.download_update()
-                return
+        print("🚀 بدء تشغيل WhatsApp Sender Pro...")
         
-        # التحقق من الترخيص
-        if self.check_license():
-            self.start_main_app()
-        else:
-            self.show_license_window()
+        # استيراد PyQt6
+        from PyQt6.QtWidgets import QApplication
+        from PyQt6.QtGui import QIcon
+        
+        # استيراد وحداتنا
+        sys.path.insert(0, str(current_dir))
+        
+        from src.ui.main_window import WhatsAppSenderPro
+        from src.utils.logger import setup_logger
+        
+        # إعداد التطبيق
+        app = QApplication(sys.argv)
+        app.setApplicationName("WhatsApp Sender Pro")
+        app.setApplicationVersion("4.4.0")
+        
+        # إعداد السجلات
+        logger = setup_logger()
+        logger.info("بدأ تشغيل التطبيق")
+        
+        # إنشاء النافذة الرئيسية
+        window = WhatsAppSenderPro()
+        
+        # تحميل الأيقونة إذا وجدت
+        icon_paths = [
+            project_dir / "icon.ico",
+            project_dir / "icon.png",
+            project_dir / "assets" / "icons" / "icon.ico",
+            project_dir / "assets" / "icons" / "icon.png"
+        ]
+        
+        for icon_path in icon_paths:
+            if icon_path.exists():
+                app.setWindowIcon(QIcon(str(icon_path)))
+                window.setWindowIcon(QIcon(str(icon_path)))
+                print(f"✅ تم تحميل الأيقونة: {icon_path}")
+                break
+        
+        window.show()
+        
+        print("✅ التطبيق جاهز للاستخدام!")
+        
+        # تشغيل التطبيق
+        sys.exit(app.exec())
+        
+    except Exception as e:
+        print(f"❌ خطأ غير متوقع: {e}")
+        traceback.print_exc()
+        input("اضغط Enter للخروج...")
 
 if __name__ == "__main__":
-    # إنشاء المجلدات الأساسية
-    folders = ['app/core', 'app/ui', 'app/services', 'app/assets',
-               'config', 'database/migrations', 'utils', 'tests', 'logs']
-    
-    for folder in folders:
-        os.makedirs(current_dir / folder, exist_ok=True)
-    
-    # تشغيل التطبيق
-    app = WhatsAppSenderPro()
-    app.run()
+    main()

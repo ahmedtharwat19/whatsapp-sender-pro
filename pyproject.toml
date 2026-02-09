@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whatsapp-sender-pro"
+version = "4.4.0"
+description = "WhatsApp Sender Pro - Professional Edition"
+readme = "README.md"
+authors = [{name = "Ahmed Tharwat", email = "ahmed.tharwat19@gmail.com"}]
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "License :: Other/Proprietary License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "PyQt6>=6.5.0",
+    "selenium>=4.15.0",
+    "webdriver-manager>=4.0.1",
+    "pandas>=2.1.0",
+    "Pillow>=10.1.0",
+    "cryptography>=41.0.0",
+    "requests>=2.31.0",
+    "pyperclip>=1.8.2",
+    "psutil>=5.9.0",
+    "arabic-reshaper>=3.0.0",
+    "python-bidi>=0.4.2",
+    "deep-translator>=1.11.0",
+    "openpyxl>=3.1.0",
+    "python-dotenv>=1.0.0",
+    "PyAutoGUI>=0.9.54",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ahmedtharwat19/whatsapp-sender-pro"
+"Bug Tracker" = "https://github.com/ahmedtharwat19/whatsapp-sender-pro/issues"
+
+[project.scripts]
+whatsapp-sender-pro = "src.main:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0.0", "black>=23.0.0", "flake8>=6.0.0", "mypy>=1.0.0"]
+full = ["pywin32>=305; platform_system=='Windows'", "pycaw>=2023.8.19"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"src.data" = ["**/*"]
+"src.assets" = ["**/*"]

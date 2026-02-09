@@ -1,22 +1,30 @@
-# Python
+# بيئة بايثون
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+# ملفات التثبيت
+pip-delete-this-directory.txt
+pip-log.txt
 
-# OS
+# ملفات النظام
 .DS_Store
 .DS_Store?
 ._*
@@ -25,16 +33,42 @@ venv.bak/
 ehthumbs.db
 Thumbs.db
 
-# Project specific
-/config/firebase_config.json
-/config/encryption_keys.json
-*.key
-*.pem
-*.crt
-*.log
-/database/*.db
+# بيانات التطبيق
+data/logs/*
+data/temp/*
+!data/logs/.gitkeep
+!data/temp/.gitkeep
 
-# Secrets
-config/firebase_config.json
-config/encryption_keys.json
-.env
+# ملفات الإعدادات
+config/settings.json
+config/license.dat
+
+# Chrome profile
+chrome_profile/
+chrome_debug.log
+
+# ملفات الاختبار
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Pycharm
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-*
+
+# ملفات نظام
+*.log
+*.tmp
+*.temp
+
+# ملفات النسخ الاحتياطي
+*.bak
+*.backup
