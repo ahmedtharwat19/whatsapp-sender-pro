@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  whatsapp-sender:
+    build: .
+    container_name: whatsapp-sender-pro
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+      - ./database:/app/database
+    environment:
+      - PYTHONPATH=/app
+      - DISPLAY=:99
+    tty: true

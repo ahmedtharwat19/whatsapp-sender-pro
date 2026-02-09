@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+/config/firebase_config.json
+/config/encryption_keys.json
+*.key
+*.pem
+*.crt
+*.log
+/database/*.db
+
+# Secrets
+config/firebase_config.json
+config/encryption_keys.json
+.env

@@ -1,0 +1,188 @@
+# =====================
+# App Configuration
+# =====================
+app:
+  name: "WhatsApp Sender Pro"
+  version: "1.0.0"
+  author: "Your Company"
+  support_email: "support@yourcompany.com"
+  website: "https://yourcompany.com"
+
+# =====================
+# WhatsApp Settings
+# =====================
+whatsapp:
+  web_url: "https://web.whatsapp.com"
+  qr_timeout: 180
+  timeout: 30
+  max_retries: 3
+  message_delay: 2
+  headless_mode: false
+  profile_path: "./whatsapp_profile"
+
+# =====================
+# Messaging Settings
+# =====================
+message:
+  max_characters: 1000
+  max_contacts: 1000
+  delay_between_messages: 2
+
+# =====================
+# Image Settings
+# =====================
+image:
+  default_font_size: 40
+  font_color_options:
+    - name: "Black"
+      value: "#000000"
+    - name: "White"
+      value: "#FFFFFF"
+    - name: "Red"
+      value: "#FF0000"
+    - name: "Blue"
+      value: "#0000FF"
+    - name: "Green"
+      value: "#00FF00"
+
+# =====================
+# Pricing Plans
+# =====================
+pricing:
+  plans:
+    trial:
+      name: "Trial"
+      price: 0
+      duration_days: 7
+      features:
+        - "Up to 50 messages"
+        - "Basic features"
+    monthly:
+      name: "Monthly"
+      price: 500
+      duration_days: 30
+      features:
+        - "Unlimited messages"
+        - "All features"
+    quarterly:
+      name: "Quarterly"
+      price: 1200
+      duration_days: 90
+      features:
+        - "Unlimited messages"
+        - "All features"
+        - "Priority support"
+    half_year:
+      name: "Half Year"
+      price: 2000
+      duration_days: 180
+      features:
+        - "Unlimited messages"
+        - "All features"
+        - "Priority support"
+        - "Custom templates"
+    nine_months:
+      name: "Nine Months"
+      price: 2800
+      duration_days: 270
+      features:
+        - "Unlimited messages"
+        - "All features"
+        - "Priority support"
+        - "Custom templates"
+    yearly:
+      name: "Yearly"
+      price: 3800
+      duration_days: 365
+      features:
+        - "Unlimited messages"
+        - "All features"
+        - "Priority support"
+        - "Custom templates"
+        - "Dedicated account manager"
+
+# =====================
+# License Settings
+# =====================
+license:
+  trial_days: 7
+  trial_max_uses: 50
+  check_interval: 3600
+  offline_mode: true
+  offline_days: 7
+
+# =====================
+# UI Settings
+# =====================
+ui:
+  language: "ar"
+  theme: "light"
+  font_family: "Arial"
+  font_size: 11
+  auto_save: true
+  save_interval: 300
+
+# =====================
+# File Handling
+# =====================
+files:
+  supported_formats: [".csv", ".xlsx", ".xls", ".json"]
+  max_file_size: 10
+  backup_enabled: true
+  backup_count: 5
+
+# =====================
+# Security
+# =====================
+security:
+  encryption_level: "high"
+  hwid_check: true
+  license_check: true
+  auto_update: true
+
+# =====================
+# Logging
+# =====================
+logging:
+  level: "INFO"
+  file_path: "./logs/app.log"
+  max_size: 10
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# =====================
+# Firebase
+# =====================
+firebase:
+  enabled: true
+  sync_interval: 300
+  offline_cache: true
+
+# =====================
+# Updates
+# =====================
+updates:
+  check_on_startup: true
+  auto_download: false
+  notify_user: true
+
+# =====================
+# Languages
+# =====================
+languages:
+  supported:
+    - code: "en"
+      name: "English"
+      file: "en.json"
+    - code: "ar"
+      name: "العربية"
+      file: "ar.json"
+    - code: "fr"
+      name: "Français"
+      file: "fr.json"
+    - code: "es"
+      name: "Español"
+      file: "es.json"
+    - code: "de"
+      name: "Deutsch"
+      file: "de.json"
